@@ -2,35 +2,47 @@ import React, {useState, useEffect} from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
 import Rating from '../components/Rating'
-import axios from 'axios'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import { useDispatch, useSelector } from 'react-redux'
+import { listProductDetails } from '../actions/productActions'
+
+// import axios from 'axios' replaced with redux
 
 
 function ProductScreen() {
 // const {id: _id_} = useParams();
 // const product = products.find(p => p._id === id);
 
-const {id: _id_} = useParams();
-const [product, setProducts] = useState ([]);
+
+// const [product, setProducts] = useState ([]);
+  const {id: _id_} = useParams();
+  const dispatch = useDispatch();
+  const productDetails = useSelector(state => state.productDetails);
+  const {loading, error, product} = productDetails
 
   useEffect(() => {
+    //replaced with redux
+    // async function fetchProduct(){
 
-    async function fetchProduct(){
+    //   const {data: date} = await axios.get(`/api/products/${_id_}`);
+    //   setProducts(date);
 
-      const {data: date} = await axios.get(`/api/products/${_id_}`);
-      setProducts(date);
+    // }
 
-    }
+    // fetchProduct();
+    dispatch(listProductDetails(_id_))
 
-    fetchProduct();
-
-  }, [])
-
+  }, [dispatch, _id_ ])
 
 
  return (
   <div>
    <Link to='/' className="btn btn-light my-3">Button</Link>
-   <Row>
+   {loading ? <Loader/>
+      :error ? <Message variant="danger">{error}</Message>
+      :(
+           <Row>
      <Col md={6}>
        <Image src={product.image} alt={product.name} fluid/>
      </Col>
@@ -84,6 +96,9 @@ const [product, setProducts] = useState ([]);
        </Card>
      </Col>
    </Row>
+      )
+   }
+
   </div>
  )
 }
