@@ -18,10 +18,22 @@ main {
   color: #d3d3d3;
 }
 
-h3 {
-  padding: 1rem 0;
-}
 
 .rating span {
   margin: 0.1rem;
+}
+
+
+h1{
+  font-size: 1.8rem !important;
+  padding:1rem 0;
+}
+
+h2{
+  font-size: 1.8rem !important;
+  padding:0.5rem 0;
+}
+
+h3{
+  padding:1rem 0;
 }
