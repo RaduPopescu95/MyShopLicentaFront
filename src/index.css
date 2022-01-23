@@ -6,6 +6,40 @@ main {
   text-decoration: none;
 }
 
+.navDrop {
+  margin-left: 0.5rem;
+  margin-top: 0.3rem;
+  font-size: 1rem;
+  color: #818589;
+  text-decoration: none;
+}
+
+#username {
+  padding: 0% !important;
+}
+
+.navDropLink {
+  font-size: 1rem;
+  color: #818589;
+  text-decoration: none !important;
+  border: none !important;
+}
+
+.navDropTitle {
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  color: #818589;
+  text-decoration: none !important;
+  border: none !important;
+}
+.navDropTitle:hover {
+  color: white;
+}
+
+.navDropTitle:focus {
+  color: #d3d3d3;
+}
+
 .navl {
   margin-left: 0.5rem;
   margin-top: 0.3rem;
@@ -15,7 +49,7 @@ main {
 }
 
 .navl:hover {
-  color: #d3d3d3;
+  color: white;
 }
 
 .rating span {
