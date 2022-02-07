@@ -1,3 +1,9 @@
+/* ------General------ */
+
+a {
+  text-decoration: none;
+}
+
 main {
   min-height: 80vh;
 }
@@ -5,6 +11,12 @@ main {
 .anchors {
   text-decoration: none;
 }
+
+.anchors:hover {
+  text-decoration: underline;
+}
+
+/* ------Navbar------- */
 
 .navDrop {
   margin-left: 0.5rem;
@@ -68,4 +80,29 @@ h2 {
 
 h3 {
   padding: 1rem 0;
+}
+
+/* ----Shipping Screen----- */
+
+.PostalCodeInput::-webkit-inner-spin-button,
+.PostalCodeInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+/* ------Theme Change------- */
+
+.white-content {
+  background: #e4e4e4 !important;
+}
+
+.white-content-txt {
+  color: white !important;
+}
+
+.black-content {
+  background-color: #201c34 !important;
+  /* background-color: #201c34 !important; */
 }

@@ -14,7 +14,7 @@ function Product({ produs }) {
       <Card.Body>
         <Link className="anchors" to={`/product/${produs._id}`}>
           <Card.Title as="div">
-            <strong>{produs.name}</strong>
+            <strong id="txtcl">{produs.name}</strong>
           </Card.Title>
         </Link>
 

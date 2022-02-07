@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
+import {
+  Link,
+  useParams,
+  useNavigate,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 
 import {
   Row,
@@ -27,7 +33,8 @@ function ProductScreen(props) {
 
   // const [product, setProducts] = useState ([]);
   const [qty, setQty] = useState(1);
-  const historys = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { id: _id_ } = useParams();
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
@@ -48,14 +55,17 @@ function ProductScreen(props) {
 
   //function addToCart
   const addToCartHandler = () => {
-    historys(`/cart/${_id_}?qty=${qty}`);
+    navigate(`/cart/${_id_}?qty=${qty}`);
   };
 
   return (
     <div>
-      <Link to="/" className="btn btn-dark my-3">
+      {/* <Link to="/" className="btn btn-dark my-3">
         Back
-      </Link>
+      </Link> */}
+      <Button onClick={() => navigate(-1)} className="btn btn-dark my-3">
+        Back
+      </Button>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -103,7 +113,7 @@ function ProductScreen(props) {
                   <Row>
                     <Col>Status:</Col>
                     <Col>
-                      {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
+                      {product.countInStock <= 0 ? "Out of Stock" : "In Stock"}
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -134,7 +144,7 @@ function ProductScreen(props) {
                   <Button
                     onClick={addToCartHandler}
                     className="btn-block"
-                    disabled={product.countInStock == 0}
+                    disabled={product.countInStock <= 0}
                     type="button"
                   >
                     Add to Cart

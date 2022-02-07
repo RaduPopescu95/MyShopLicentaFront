@@ -18,6 +18,9 @@ export default function CartScreen(locatione, history) {
   const { id: productId } = useParams();
   const location = useLocation();
   const navCheckOut = useNavigate();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
   const dispatch = useDispatch();
@@ -37,7 +40,7 @@ export default function CartScreen(locatione, history) {
   };
 
   const checkoutHandler = () => {
-    navCheckOut("/login?redirect=shipping");
+    navCheckOut("/shipping");
   };
 
   return (
@@ -57,7 +60,9 @@ export default function CartScreen(locatione, history) {
                     <Image src={item.image} alt={item.name} fluid rounded />
                   </Col>
                   <Col md={3}>
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
+                    <Link to={`/product/${item.product}`} className="anchors">
+                      {item.name}
+                    </Link>
                   </Col>
                   <Col md={2}>${item.price}</Col>
                   <Col md={3}>

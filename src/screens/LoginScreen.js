@@ -6,6 +6,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
 import { login } from "../actions/userActions";
+import { getUserOrdersList } from "../actions/orderActions";
 
 function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ function LoginScreen() {
   const dispatch = useDispatch();
 
   const location = useLocation();
-  const istoric = useNavigate();
+  const navigate = useNavigate();
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
@@ -23,13 +24,21 @@ function LoginScreen() {
 
   useEffect(() => {
     if (userInfo) {
-      istoric(redirect);
+      if (location.state?.from) {
+        navigate(location.state.from);
+      } else {
+        navigate("/");
+      }
     }
-  }, [istoric, userInfo, redirect]);
+    console.log(navigate);
+    console.log(redirect);
+    console.log(location);
+  }, [navigate, userInfo, redirect]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
+
     console.log("Submit test");
     console.log(location.search);
   };

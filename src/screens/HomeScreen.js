@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import ThemeChange from "../components/ThemeChange";
 // import axios from 'axios' replaced using redux
 
 function HomeScreen() {
@@ -29,7 +30,7 @@ function HomeScreen() {
 
   return (
     <div>
-      <h1>latest products</h1>
+      <h1 id="txtcl">latest products</h1>
       {incarcare ? (
         <Loader />
       ) : eroare ? (
