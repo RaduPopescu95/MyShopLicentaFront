@@ -29,10 +29,10 @@ function ProfileScreen() {
   const redirect = useNavigate();
 
   const userDetails = useSelector((state) => state.userDetails);
-  const userLogin = useSelector((state) => state.userLogin);
   const userUpdate = useSelector((state) => state.userUpdate);
   const userOrders = useSelector((state) => state.userOrders);
   const temaProfil = useSelector((state) => state.temaProfil);
+  const userLogin = useSelector((state) => state.userLogin);
 
   const { dark, light } = temaProfil;
   const { user, error, loading } = userDetails;
@@ -49,7 +49,7 @@ function ProfileScreen() {
     if (!infoUser) {
       redirect("/login");
     } else {
-      if (!user || !user.name || succes) {
+      if (!user || !user.name || succes || infoUser._id !== user._id) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
 
         dispatch(getUserDetails("profile"));

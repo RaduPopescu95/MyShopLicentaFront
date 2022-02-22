@@ -8,20 +8,37 @@ import FormContainer from "../components/FormContainer";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { PayPalButton } from "react-paypal-button-v2";
-import { getOrderDetails, payOrder } from "../actions/orderActions";
-import { ORDER_PAY_RESET } from "../constants/orderConstants";
+import {
+  getOrderDetails,
+  payOrder,
+  delivereOrder,
+} from "../actions/orderActions";
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVERED_RESET,
+} from "../constants/orderConstants";
 
 function OrderDetailsScreen() {
   const dispatch = useDispatch();
   const [sdkReady, setSdkReady] = useState(false);
   const { id: orderId } = useParams();
   const location = useLocation();
-  const navigate = useNavigate();
+  const redirect = useNavigate();
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, error, loading } = orderDetails;
 
   const orderPay = useSelector((state) => state.orderPay);
   const { success: successPay, error: eroare, loading: incarcare } = orderPay;
+
+  const orderDelivered = useSelector((state) => state.orderDelivered);
+  const {
+    success: successDeliver,
+    error: eroareDeliver,
+    loading: incarcareDeliver,
+  } = orderDelivered;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   //setting multiple values and proprieties to our cart obj. Not adding them to our store(state)
   //reduce()  returns the sum of all the elements in an array. Each item price * item qty is added to the acc consecutively. 0 means that the acc will start at a value of 0
@@ -30,7 +47,7 @@ function OrderDetailsScreen() {
       .reduce((acc, item) => acc + item.price * item.qty, 0)
       .toFixed(2);
   }
-  //AWswy5MMLLw8u0vfUKmo7Y5VTpAi_7nuZOz6HMEo1GDkK8zbq7e2y_LjxaJMOWgQUWOsQUA1CHSL_38e
+
   const addPayPalScript = () => {
     const script = document.createElement("script");
     script.type = "text/javascript";
@@ -44,8 +61,18 @@ function OrderDetailsScreen() {
   };
 
   useEffect(() => {
-    if (!order || successPay || order._id !== Number(orderId)) {
+    if (!userInfo || !userInfo.isAdmin) {
+      redirect("/login");
+    }
+
+    if (
+      !order ||
+      successPay ||
+      order._id !== Number(orderId) ||
+      successDeliver
+    ) {
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_DELIVERED_RESET });
       dispatch(getOrderDetails(orderId));
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -54,11 +81,16 @@ function OrderDetailsScreen() {
         setSdkReady(true);
       }
     }
-  }, [dispatch, order, orderId, successPay]);
+    console.log(order);
+  }, [dispatch, order, orderId, successPay, successDeliver, userInfo]);
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult));
     console.log(paymentResult);
+  };
+
+  const deliverHandler = () => {
+    dispatch(delivereOrder(order));
   };
 
   return loading ? (
@@ -90,7 +122,7 @@ function OrderDetailsScreen() {
               </p>
               {order.isDelivered ? (
                 <Message variant="success">
-                  Delivered at {order.deliveredAt}
+                  Delivered on {order.deliveredAt}
                 </Message>
               ) : (
                 <Message variant="warning">Not Delivered</Message>
@@ -189,6 +221,36 @@ function OrderDetailsScreen() {
                     />
                   )}
                 </ListGroup.Item>
+              )}
+              {/* {incarcareDeliver && <Loader />} */}
+              {userInfo &&
+              userInfo.isAdmin &&
+              order.isPaid &&
+              !order.isDelivered ? (
+                <ListGroup.Item>
+                  <Button
+                    type="button"
+                    className="btn btn-block"
+                    onClick={deliverHandler}
+                  >
+                    Mark As Delivered
+                  </Button>
+                </ListGroup.Item>
+              ) : userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                order.isDelivered ? (
+                <ListGroup.Item>
+                  <Button
+                    type="button"
+                    className="btn btn-block"
+                    onClick={deliverHandler}
+                  >
+                    Mark As Not Delivered
+                  </Button>
+                </ListGroup.Item>
+              ) : (
+                ""
               )}
             </ListGroup>
           </Card>

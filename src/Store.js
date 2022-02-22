@@ -4,38 +4,57 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import {
   productListReducers,
   productDetailsReducers,
+  productDeleteReducer,
+  productCreateReducer,
+  productUpdateReducer,
 } from "./Reducers/productReducers";
 import { cartReducer } from "./Reducers/cartReducers";
 import {
   profileThemeReducer,
   updateUserReducer,
+  userDeleteReducer,
   userDetailsReducer,
   userListReducer,
   userLoginReducers,
+  userProfileUpdateReducer,
   userRegisterReducer,
 } from "./Reducers/userReducers";
 import {
   orderCreateReducer,
+  orderDeliveredReducer,
   orderDetailsReducer,
   orderPayReducer,
+  ordersListReducer,
   userOrdersListReducer,
 } from "./Reducers/orderReducers";
+
 import { updateTheme } from "./actions/userActions";
 
 const reducer = combineReducers({
   productList: productListReducers,
   productDetails: productDetailsReducers,
+  productDelete: productDeleteReducer,
+  productCreate: productCreateReducer,
+  productUpdate: productUpdateReducer,
+
   cart: cartReducer,
+
   userLogin: userLoginReducers,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdate: updateUserReducer,
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
+  userUpdateProfil: userProfileUpdateReducer,
+  userOrders: userOrdersListReducer,
+
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
-  userOrders: userOrdersListReducer,
+  ordersList: ordersListReducer,
+  orderDelivered: orderDeliveredReducer,
+
   temaProfil: profileThemeReducer,
-  userList: userListReducer,
 });
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")

@@ -66,33 +66,39 @@ function Header() {
               </Nav.Link>
 
               {userInfo ? (
-                <NavDropdown
-                  // className="navDrop "
-                  title={userInfo.name}
-                  // id="username"
-                >
-                  {/* <NavDropdown.Item className="navDropLink">
-                    <Link className="text-decoration-none " to="/profile">
-                      Profile
-                    </Link>
-                  </NavDropdown.Item> */}
+                <NavDropdown title={userInfo.name}>
                   <NavDropdown.Item onClick={() => handleSelect("/profile")}>
                     Profile
                   </NavDropdown.Item>
-                  <NavDropdown.Item
-                    onClick={logoutHandler}
-                    // className="navDropLink"
-                  >
+                  <NavDropdown.Item onClick={logoutHandler}>
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
-                // <Link className="navl  mx-3" to="/login">
-                //   <i className="fas fa-user"></i>Login
-                // </Link>
                 <Nav.Link as={NavLink} to="/login">
                   <i className="fas fa-user"></i>Login
                 </Nav.Link>
+              )}
+
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title="Admin" id="adminmenu">
+                  <NavDropdown.Item
+                    onClick={() => handleSelect("/admin/userlist")}
+                  >
+                    Users
+                  </NavDropdown.Item>
+                  <NavDropdown.Item
+                    onClick={() => handleSelect("/admin/productlist")}
+                  >
+                    Products
+                  </NavDropdown.Item>
+
+                  <NavDropdown.Item
+                    onClick={() => handleSelect("/admin/orderlist")}
+                  >
+                    Orders
+                  </NavDropdown.Item>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>

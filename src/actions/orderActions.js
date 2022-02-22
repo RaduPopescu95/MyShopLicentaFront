@@ -16,6 +16,13 @@ import {
   USER_ORDERS_SUCCESS,
   USER_ORDERS_FAIL,
   USER_ORDERS_RESET,
+  LIST_ORDERS_REQUEST,
+  LIST_ORDERS_SUCCESS,
+  LIST_ORDERS_FAIL,
+  ORDER_DELIVERED_REQUEST,
+  ORDER_DELIVERED_SUCCESS,
+  ORDER_DELIVERED_FAIL,
+  ORDER_DELIVERED_RESET,
 } from "../constants/orderConstants";
 
 import { CART_CLEAR_ITEMS } from "../constants/cartConstants";
@@ -158,5 +165,75 @@ export const getUserOrdersList = () => async (dispatch, getState) => {
           : error.message,
     });
     console.log("erorareee Comenzile mele");
+  }
+};
+
+export const getOrdersList = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: LIST_ORDERS_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data: date } = await axios.get(`/api/orders/`, config);
+
+    dispatch({
+      type: LIST_ORDERS_SUCCESS,
+      payload: date,
+    });
+  } catch (error) {
+    dispatch({
+      type: LIST_ORDERS_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+    console.log("erorareee Comenzile LISTA");
+  }
+};
+
+export const delivereOrder = (order) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_DELIVERED_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data: date } = await axios.put(
+      `/api/orders/${order._id}/delivered/`,
+      {},
+      config
+    );
+
+    dispatch({
+      type: ORDER_DELIVERED_SUCCESS,
+      payload: date,
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER_DELIVERED_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+    console.log("erorareee DELIVER");
   }
 };

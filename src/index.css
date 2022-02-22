@@ -106,3 +106,13 @@ h3 {
   background-color: #201c34 !important;
   /* background-color: #201c34 !important; */
 }
+
+/* ------Image Upload------- */
+.img-upload-message {
+  width: 100% !important;
+}
+
+/* ---------Alert Messages------------ */
+.alert {
+  margin-bottom: 0.5rem !important;
+}
