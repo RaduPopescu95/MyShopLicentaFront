@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navbar, Nav, Container, NavItem, NavDropdown } from "react-bootstrap";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import SearchBox from "./SearchBox";
 import { logout } from "../actions/userActions";
 import ThemeChange from "./ThemeChange";
 
@@ -38,9 +39,11 @@ function Header() {
     <header>
       <Navbar
         className="p-2"
-        bg={tema ? tema : "light"}
+        // bg={tema ? tema : "light"}
+        bg={"dark"}
         expand="lg"
-        variant={tema ? tema : "light"}
+        // variant={tema ? tema : "light"}
+        variant={"dark"}
         collapseOnSelect
       >
         <Container>
@@ -57,6 +60,7 @@ function Header() {
           </Nav.Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
+            <SearchBox />
             <Nav className="mr-auto">
               {/* <Link className="navl" to="/cart">
                 <i className="fas fa-shopping-cart"></i>Cart

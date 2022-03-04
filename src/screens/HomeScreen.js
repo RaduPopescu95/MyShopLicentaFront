@@ -1,48 +1,60 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
+import { useLocation, useNavigate } from "react-router-dom";
 import Product from "../components/Product";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import Paginate from "../components/Paginate";
 import ThemeChange from "../components/ThemeChange";
+import ProductCarousel from "../components/ProductCarousel";
 // import axios from 'axios' replaced using redux
 
 function HomeScreen() {
   const dispatch = useDispatch();
-  const productList = useSelector((state) => state.productList);
-  const { error: eroare, loading: incarcare, products: produse } = productList;
+  let location = useLocation();
 
-  // const [products, setProducts] = useState ([]); replaced using redux
+  let keyword = location.search;
+
+  const productList = useSelector((state) => state.productList);
+  const {
+    error: eroare,
+    loading: incarcare,
+    products: produse,
+    page,
+    pages,
+  } = productList;
 
   useEffect(() => {
-    dispatch(listProducts());
+    dispatch(listProducts(keyword));
+  }, [dispatch, keyword]);
 
-    // -------- replaced using redux -------
-    // async function fetchProducts(){
-    //   const {data: date} = await axios.get('/api/products/');
-    //   setProducts(date);
-
-    // }
-
-    // fetchProducts();
-  }, [dispatch]);
+  // const key = () => {
+  //   console.log("keyword:", keyword);
+  // };
 
   return (
     <div>
+      {!keyword && <ProductCarousel />}
+
       <h1 id="txtcl">latest products</h1>
+      {/* <Button onClick={key}>asa</Button> */}
       {incarcare ? (
         <Loader />
       ) : eroare ? (
         <Message variant="danger">{eroare}</Message>
       ) : (
-        <Row>
-          {produse.map((product) => (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-              <Product produs={product} />
-            </Col>
-          ))}
-        </Row>
+        <div>
+          <Row>
+            {produse.map((product) => (
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Product produs={product} />
+              </Col>
+            ))}
+          </Row>
+          <Paginate page={page} pages={pages} keyword={keyword} />
+        </div>
       )}
     </div>
   );

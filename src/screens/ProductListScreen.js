@@ -10,13 +10,17 @@ import {
   createProduct,
 } from "../actions/productActions";
 import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
+import Paginate from "../components/Paginate";
 
 function ProductListScreen() {
   const redirect = useNavigate();
   const dispatch = useDispatch();
+  let location = useLocation();
+
+  let keyword = location.search;
 
   const productList = useSelector((state) => state.productList);
-  const { loading, products, error } = productList;
+  const { loading, products, error, page, pages } = productList;
   const productDelete = useSelector((state) => state.productDelete);
   const {
     loading: loadingDelete,
@@ -54,7 +58,7 @@ function ProductListScreen() {
     if (successCreate) {
       redirect(`/admin/product/${createdProduct._id}/edit`);
     } else {
-      dispatch(listProducts());
+      dispatch(listProducts(keyword));
     }
   }, [
     dispatch,
@@ -64,6 +68,7 @@ function ProductListScreen() {
     successCreate,
     createdProduct,
     redirect,
+    keyword,
   ]);
   return (
     <div>
@@ -89,52 +94,55 @@ function ProductListScreen() {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className="table-sm">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>NAME</th>
-              <th>PRICE</th>
-              <th>CATEGORY</th>
-              <th>BRAND</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product._id}>
-                <td>{product._id}</td>
-                <td>{product.name}</td>
-                <td>${product.price}</td>
-                <td>{product.category}</td>
-                <td>{product.brand}</td>
-                <td>
-                  <Link
-                    className="btn btn-sm btn-primary "
-                    to={`/admin/product/${product._id}/edit`}
-                  >
-                    {
+        <div>
+          <Table striped bordered hover responsive className="table-sm">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>CATEGORY</th>
+                <th>BRAND</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr key={product._id}>
+                  <td>{product._id}</td>
+                  <td>{product.name}</td>
+                  <td>${product.price}</td>
+                  <td>{product.category}</td>
+                  <td>{product.brand}</td>
+                  <td>
+                    <Link
+                      className="btn btn-sm btn-primary "
+                      to={`/admin/product/${product._id}/edit`}
+                    >
+                      {
+                        <i
+                          className="fas fa-edit"
+                          style={{ fontSize: "1rem" }}
+                        ></i>
+                      }
+                    </Link>
+                    <Button
+                      className="btn btn-sm btn-danger mx-2 "
+                      onClick={() => deleteHandler(product._id)}
+                    >
+                      {" "}
                       <i
-                        className="fas fa-edit"
+                        className="fas fa-trash"
                         style={{ fontSize: "1rem" }}
                       ></i>
-                    }
-                  </Link>
-                  <Button
-                    className="btn btn-sm btn-danger mx-2 "
-                    onClick={() => deleteHandler(product._id)}
-                  >
-                    {" "}
-                    <i
-                      className="fas fa-trash"
-                      style={{ fontSize: "1rem" }}
-                    ></i>
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <Paginate pages={pages} page={page} isAdmin={true} />
+        </div>
       )}
     </div>
   );

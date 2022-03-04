@@ -116,3 +116,71 @@ h3 {
 .alert {
   margin-bottom: 0.5rem !important;
 }
+
+/* ----------Pagination---------- */
+
+/* #container{
+  padding-top: 20px;
+}
+#pagination{
+  display: flex;
+  justify-content: center;
+} */
+.blocks {
+  width: 40px;
+  line-height: 40px;
+  text-align: center;
+  border: 1px solid #dddddd;
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+}
+.blocks:not(:first-child) {
+  margin-left: 5px;
+}
+.blocks:first-child {
+  border-radius: 10px 0 0 10px;
+}
+.blocks:last-child {
+  border-radius: 0 10px 10px 0;
+}
+.blocks:hover {
+  background-color: #dddddd;
+}
+.activa {
+  background-color: #808080;
+}
+
+/* -------Carousel-------- */
+
+.carousel-item-prev,
+.carousel-item-next,
+.carousel-item.active {
+  display: flex;
+}
+.carousel-caption {
+  position: absolute;
+  top: 0;
+}
+
+.carousel-caption h4 {
+  color: #fff;
+}
+
+.carousel img {
+  display: block;
+  height: 300px;
+  padding: 30px;
+  margin: 40px;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.carousel a {
+  margin: 0 auto;
+}
+@media (max-width: 900px) {
+  .carousel-caption h2 {
+    font-size: 2.5vw;
+  }
+}
