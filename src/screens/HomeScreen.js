@@ -28,6 +28,7 @@ function HomeScreen() {
 
   useEffect(() => {
     dispatch(listProducts(keyword));
+    console.log(produse.length);
   }, [dispatch, keyword]);
 
   // const key = () => {
@@ -36,8 +37,8 @@ function HomeScreen() {
 
   return (
     <div>
-      {!keyword && <ProductCarousel />}
-
+      {/* {!keyword && <ProductCarousel />} */}
+      <ProductCarousel />
       <h1 id="txtcl">latest products</h1>
       {/* <Button onClick={key}>asa</Button> */}
       {incarcare ? (
@@ -47,11 +48,19 @@ function HomeScreen() {
       ) : (
         <div>
           <Row>
-            {produse.map((product) => (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                <Product produs={product} />
+            {produse.length != 0 ? (
+              produse.map((product) => (
+                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <Product produs={product} />
+                </Col>
+              ))
+            ) : (
+              <Col className="d-flex justify-content-center">
+                <Message variant="info">
+                  Your search doest not match any product in the list
+                </Message>
               </Col>
-            ))}
+            )}
           </Row>
           <Paginate page={page} pages={pages} keyword={keyword} />
         </div>
